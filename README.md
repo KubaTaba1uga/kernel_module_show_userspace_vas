@@ -4,7 +4,7 @@ A minimal app to explore Linux process VAS. It prints "Hello World!" and then ca
 
 ## Build
 
-1. Install required tools and kernel headers:
+1. Install required tools:
    ```bash
    sudo apt-get install build-essential
    ```
