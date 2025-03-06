@@ -1,36 +1,39 @@
 # show_userspace_vas
 
-A simple program that will help us to better understand process VAS in Linux. The app prints hello world and invokes pause system call. From `man pause`: pause() causes the calling process (or thread) to sleep until a signal is delivered. While the program waits for any signal we will examine process vas further using various tools.
+A minimal app to explore Linux process VAS. It prints "Hello World!" and then calls `pause()`, allowing you to inspect the memory layout.
 
-## Building
+## Build
 
-1. Ensure you have the necessary build tools and kernel headers installed:
+1. Install required tools and kernel headers:
    ```bash
    sudo apt-get install build-essential
    ```
-2. Build the program by running:
+2. Compile the program:
    ```bash
    gcc hello_world.c -o hello_world
    ```
 
-## Usage
+## Run
 
-- **Run the app** (optionally specifying the maximum number of threads to print):
-  ```bash
-  ./hello_world
-  ```
-  
-- **Investigate VAS with cat** This will show you memory layout of the process, notice order of reagions with heap being on top and growing down and stack being relatively low and growing up:
+Start the program:
+```bash
+./hello_world
+```
+
+## Inspecting Memory Layout
+
+- Use the following commands to view the memory regions:
   ```bash
   sudo cat /proc/<pid>/maps
   ```
   
-- **View more mem info with pmap** to see the thread information:
-  ```bash
-  sudo pmap <pid>
-  sudo pmap -X <pid>
-  ```
+- We are seeing lowest address at the top.
+- Lowest addresses are populated by binary code and data.
+- Heap is located just after the binary’s data and grows upward (means grows incrementing addresses).
+- The gap between the heap and the stack is used for mapping shared libraries (e.g., libc, dynamic linker) via mmap.
+- Stack is found at high addresses and grows downward (means grows decrementing addresses).
 
 ## License
 
 MIT
+
